@@ -1,0 +1,114 @@
+{% extends "employee_information/base.html" %}
+
+{% block title %}Leave Management{% endblock %}
+
+{% block pageContent %}
+<div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+    <div class="mdc-card py-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4 class="card-title mb-0">Leave Management</h4>
+        </div>
+    </div>
+</div>
+<div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+    <div class="mdc-card">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <colgroup>
+                    <col width="5%">
+                    <col width="25%">
+                    <col width="25%">
+                    <col width="20%">
+                    <col width="15%">
+                    <col width="10%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th class="text-center py-1">#</th>
+                        <th class="text-center py-1">Employee Name</th>
+                        <th class="text-center py-1">Leave Type</th>
+                        <th class="text-center py-1">Start Date</th>
+                        <th class="text-center py-1">End Date</th>
+                        <th class="text-center py-1">Status</th>
+                        <th class="text-center py-1">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for leave in leave_requests %}
+                    <tr>
+                        <td class="text-center">{{ forloop.counter }}</td>
+                        <td class="text-start">{{ leave.employee.name }}</td>
+                        <td class="text-start">{{ leave.leave_type }}</td>
+                        <td class="text-center">{{ leave.start_date }}</td>
+                        <td class="text-center">{{ leave.end_date }}</td>
+                        <td class="text-center">
+                            {% if leave.status == "Pending" %}
+                            <span class="badge bg-warning rounded-pill px-3">{{ leave.status }}</span>
+                            {% elif leave.status == "Approved" %}
+                            <span class="badge bg-success rounded-pill px-3">{{ leave.status }}</span>
+                            {% else %}
+                            <span class="badge bg-danger rounded-pill px-3">{{ leave.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <button class="mdc-button mdc-button--raised approve-leave" data-id="{{ leave.id }}" title="Approve">
+                                <i class="material-icons mdc-button__icon">check</i>
+                            </button>
+                            <button class="mdc-button mdc-button--raised decline-leave" data-id="{{ leave.id }}" title="Decline">
+                                <i class="material-icons mdc-button__icon">close</i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock pageContent %}
+
+{% block extra_js %}
+<script>
+    $(function() {
+        $('.approve-leave').click(function() {
+            let leaveId = $(this).attr('data-id');
+            if(confirm("Are you sure you want to approve this leave request?")) {
+                handle_leave_request('approve', leaveId);
+            }
+        });
+
+        $('.decline-leave').click(function() {
+            let leaveId = $(this).attr('data-id');
+            if(confirm("Are you sure you want to decline this leave request?")) {
+                handle_leave_request('decline', leaveId);
+            }
+        });
+    });
+
+    function handle_leave_request(action, leaveId) {
+        $.ajax({
+            headers: {
+                "X-CSRFToken": '{{ csrf_token }}'
+            },
+            url: "{% url 'leave_management' %}",  // Ensure this URL matches your view
+            method: "POST",
+            data: {
+                id: leaveId,
+                action: action
+            },
+            dataType: "json",
+            error: function(err) {
+                console.log(err);
+                alert("An error occurred: " + err.responseText);
+            },
+            success: function(resp) {
+                if (resp.status === 'success') {
+                    location.reload();
+                } else {
+                    alert("An error occurred: " + resp.message);
+                }
+            }
+        });
+    }
+</script>
+{% endblock extra_js %}

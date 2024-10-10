@@ -1,0 +1,212 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
+    <!-- Load Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Embedded CSS -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            background: #3498db;
+            background: url("{% static 'image/set.png' %}") no-repeat center center fixed;
+            background-size: cover;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+
+        /* Sidebar styles */
+        .mdc-drawer {
+            width: 250px;
+            height: 100%;
+            background: #004274;
+            position: fixed;
+            z-index: 1000;
+            overflow-y: auto;
+            transition: transform 0.3s ease; /* Smooth transition for toggling */
+        }
+
+        .mdc-drawer--closed {
+            transform: translateX(-100%); /* Hide the sidebar */
+        }
+
+        .mdc-drawer__header {
+            padding: 20px;
+            text-align: center;
+            background: #003057;
+        }
+
+        .mdc-list-group {
+            padding: 0;
+        }
+
+        .mdc-list-item {
+            padding: 15px 20px; /* Adjusted for better spacing */
+        }
+
+        .mdc-drawer-link {
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            padding: 10px 0; /* Add padding for links */
+            transition: background 0.3s;
+        }
+
+        .mdc-drawer-link:hover {
+            background: rgba(255, 255, 255, 0.1); /* Highlight effect on hover */
+        }
+
+        .mdc-drawer-item-icon {
+            margin-right: 10px;
+        }
+
+        .content {
+            margin-left: 250px; /* Space for the sidebar */
+            padding: 20px;
+            transition: margin-left 0.3s ease; /* Smooth transition for content */
+        }
+
+        .content--shifted {
+            margin-left: 0; /* Shift content when sidebar is closed */
+        }
+
+        h1 {
+            color: black;
+            text-shadow: 2px 2px;
+            text-align: center;
+            margin-top: 80px;
+        }
+        h2{
+            color: blue;
+            text-shadow: 2px 2px;
+            text-align: center;
+            mmargin-top: 120px;
+        }
+
+        .dashboard-section {
+            margin-top: 20px; /* Space above section */
+            background: rgba(255, 255, 255, 0.2); /* Light background for contrast */
+            padding: 20px;
+            border-radius: 5px; /* Rounded corners */
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 10px; /* Space below section title */
+            color: #fff;
+        }
+
+        .details-list {
+            list-style-type: none; /* Remove bullet points */
+            padding-left: 0; /* Remove padding */
+        }
+
+        .details-list li {
+            margin: 5px 0; /* Space between list items */
+            color: white; /* Text color for list items */
+        }
+
+        /* Button to toggle sidebar */
+        .toggle-btn {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            background: #003057;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 1001; /* Ensure button is above the sidebar */
+            border-radius: 5px; /* Rounded corners for the button */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Toggle Button -->
+    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+    <!-- Sidebar -->
+    <aside class="mdc-drawer mdc-drawer--dismissible mdc-drawer--open" id="sidebar">
+        <div class="mdc-drawer__header border-bottom border-light">
+            <a href="{% url 'employee-dashboard' %}" class="brand-logo">
+                <h3 class="text-center text-light">Sʀɪᴍᴀ</h3>
+            </a>
+        </div>
+        <div class="mdc-drawer__content">
+            <div class="mdc-list-group">
+                <nav class="mdc-list mdc-drawer-menu">
+
+                    <div class="mdc-list-item mdc-drawer-item">
+                        <a class="mdc-drawer-link" href="{% url 'employee-details' %}">
+                            <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">group</i> View Details
+                        </a>
+                    </div>
+                    <div class="mdc-list-item mdc-drawer-item">
+                        <a class="mdc-drawer-link" href="{% url 'view-attendance' %}">
+                            <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">access_time</i> View Attendance
+                        </a>
+                    </div>
+                    <div class="mdc-list-item mdc-drawer-item">
+                        <a class="mdc-drawer-link" href="{% url 'apply-for-leaves' %}">
+                            <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">group_add</i> Apply For Leaves
+                        </a>
+                    </div>
+                    <div class="mdc-list-item mdc-drawer-item">
+                        <a class="mdc-drawer-link" href="{% url 'view-leave-status' %}">
+                            <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">check_circle</i> View Leaves Status
+                        </a>
+                    </div>
+                    <div class="mdc-list-item mdc-drawer-item">
+                        <a class="mdc-drawer-link" href="{% url 'emp_complaint' %}">
+                            <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">report_problem</i> Raised Complaint
+                        </a>
+                    </div>
+                    <div class="mdc-list-item mdc-drawer-item">
+                        <a class="mdc-drawer-link" href="{% url 'login' %}">
+                            <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">logout</i> Log Out
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Content Area -->
+    <div class="content" id="content">
+        <h1>Welcome to Sʀɪᴍᴀ Employee Dashboard</h1>
+         <h2>???Moral, cultural and spiritual values are the keys to the umpteen treasures of life.
+             So, an ideal education system would be one that blends a value-based academic set-up with impetus to talent and mental-cum-physical fitness, thus ensuring character enrichment in a child.???
+            </h2>
+            <h3> -- Sʀɪ 🇹🇦🇷🇦 ᴍᴀ -- </h3>
+        <!-- Additional Dashboard Content Here -->
+        
+            <!-- Additional Sections for Attendance and Leave Status -->
+        </div>
+    </div>
+
+    <!-- JavaScript for sidebar toggle -->
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var content = document.getElementById('content');
+
+            // Toggle classes for sidebar and content
+            sidebar.classList.toggle('mdc-drawer--closed');
+            content.classList.toggle('content--shifted');
+        }
+    </script>
+
+</body>
+</html>

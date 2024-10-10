@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply For Leaves</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include Custom CSS (Optional) -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Apply for Leave</h2>
+        <div class="card p-4 shadow-lg">
+            <form id="leaveForm">
+                <!-- Leave Type Selection -->
+                <div class="form-group">
+                    <label for="leaveType">Type of Leave</label>
+                    <select class="form-control" id="leaveType" required>
+                        <option value="" disabled selected>Select Leave Type</option>
+                        <option value="sick">Sick Leave</option>
+                        <option value="casual">Casual Leave</option>
+                        <option value="annual">Annual Leave</option>
+                        <option value="maternity">Maternity Leave</option>
+                        <option value="paternity">Paternity Leave</option>
+                        <option value="bereavement">Bereavement Leave</option>
+                        <option value="unpaid">Unpaid Leave</option>
+                    </select>
+                </div>
+                <!-- Leave Duration -->
+                <div class="form-group">
+                    <label for="leaveStart">Start Date</label>
+                    <input type="date" class="form-control" id="leaveStart" required>
+                </div>
+                <div class="form-group">
+                    <label for="leaveEnd">End Date</label>
+                    <input type="date" class="form-control" id="leaveEnd" required>
+                </div>
+                <!-- Comments -->
+                <div class="form-group">
+                    <label for="comments">Additional Comments (Optional)</label>
+                    <textarea class="form-control" id="comments" rows="3" placeholder="Enter any additional details..."></textarea>
+                </div>
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary btn-block">Submit Application</button>
+            </form>
+        </div>
+    </div>
+    <button class="btn btn-back w-100" onclick="goToDashboard()">
+        <i class="bi bi-house-door">back to dashboard</i> 
+    </button>
+
+
+    <!-- JavaScript for form submission -->
+    <script>
+        document.getElementById('leaveForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            alert('Your leave application has been submitted successfully!');
+        });
+        function goToDashboard() {
+            window.location.href = "{% url 'employee-dashboard' %}"; // Adjust this to match your defined route
+        }
+    </script>
+
+    <!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

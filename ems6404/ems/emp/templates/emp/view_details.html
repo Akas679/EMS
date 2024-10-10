@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Details</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"> 
+    <style>
+        /* Background and overall body styling */
+        body {
+            background-color: #e9ecef; /* Light grey background */
+            font-family: 'Arial', sans-serif;
+            padding: 40px;
+        }
+
+        /* Container for employee details */
+        .employee-container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 600px;
+            margin: auto;
+            text-align: center;
+        }
+
+        /* Photo styling */
+        .employee-photo {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 3px solid #007bff; /* Border around photo */
+        }
+
+        /* Employee details styling */
+        .employee-details {
+            margin-bottom: 15px;
+            color: #555;
+            text-align: left; /* Align text to the left */
+        }
+
+        .employee-details label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Heading styling */
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #007bff; /* Primary color */
+        }
+
+        /* Button styling */
+        .btn-edit, .btn-back {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-edit:hover, .btn-back:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Employee Details</h1>
+    <div class="employee-container">
+        <!-- Employee Photo -->
+        <img src="https://via.placeholder.com/120" alt="Employee Photo" class="employee-photo">
+
+        <!-- Employee Details -->
+        <div class="employee-details">
+            <label for="empId">Employee ID:</label>
+            <p id="empId">{{ employee.id }}</p>
+        </div>
+        <div class="employee-details">
+            <label for="fullName">Full Name:</label>
+            <p id="fullName">{{ employee.full_name }}</p>
+        </div>
+        <div class="employee-details">
+            <label for="mobile">Mobile Number:</label>
+            <p id="mobile">{{ employee.mobile }}</p>
+        </div>
+        <div class="employee-details">
+            <label for="dob">Date of Birth:</label>
+            <p id="dob">{{ employee.dob }}</p>
+        </div>
+        <div class="employee-details">
+            <label for="email">Email ID:</label>
+            <p id="email">{{ employee.email }}</p>
+        </div>
+        <div class="employee-details">
+            <label for="department">Department:</label>
+            <p id="department">{{ employee.department }}</p>
+        </div>
+
+        <!-- Back Button with Home Icon -->
+        <button class="btn btn-back w-100" onclick="goToDashboard()">
+            <i class="bi bi-house-door"></i> 
+        </button>
+
+        <!-- Edit Button -->
+        <button class="btn btn-edit w-100" onclick="redirectToEdit('{{ employee.id }}')">
+            Edit Details
+        </button>
+
+    <script>
+        function redirectToEdit(employeeId) {
+            window.location.href = '/emp/update/' + employeeId + '/'; // Adjust the URL as needed
+        }
+
+        function goToDashboard() {
+            window.location.href = "{% url 'employee-dashboard' %}"; // Adjust this to match your defined route
+        }
+    </script>
+
+    <!-- Bootstrap 5 JS and dependencies -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

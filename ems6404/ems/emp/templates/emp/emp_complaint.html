@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Section</title>
+    <!-- Link to Tailwind CSS (for easy responsive and modern design) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --input-bg: #f3f4f6;
+            --button-bg: linear-gradient(90deg, #1e3a8a, #6366f1);
+            --hover-bg: linear-gradient(90deg, #1e3a8a, #4f46e5);
+        }
+
+        body {
+            background: linear-gradient(to right, #f3f4f6, #e0e7ff);
+        }
+
+        .complaint-section {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 32px;
+            max-width: 700px;
+            margin: 50px auto;
+        }
+
+        .submit-btn:hover {
+            background: var(--hover-bg);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .input-field:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 6px rgba(30, 58, 138, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Complaint Section -->
+    <section class="complaint-section">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Complaint Section</h2>
+        <form id="complaintForm" class="grid grid-cols-1 gap-6">
+            <!-- Complaint Field -->
+            <label for="complaint" class="block text-lg font-semibold text-gray-700">Enter your complaint:</label>
+            <textarea id="complaint" name="complaint" rows="4" class="input-field bg-input-bg text-gray-900 border border-gray-300 rounded-md p-4 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-primary-color transition ease-in-out duration-150" placeholder="Describe your issue..."></textarea>
+
+            <!-- Employee ID Field -->
+            <label for="employee-id" class="block text-lg font-semibold text-gray-700">Employee ID:</label>
+            <input type="text" id="employee-id" name="employee-id" class="input-field bg-input-bg text-gray-900 border border-gray-300 rounded-md p-4 focus:outline-none focus:ring focus:ring-primary-color transition ease-in-out duration-150" placeholder="Your Employee ID" />
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn bg-primary-color text-blue hover:bg-primary/80 py-3 px-6 rounded-lg shadow-md transition-all duration-300 ease-in-out font-semibold text-lg" onclick="submitComplaint()">Submit Complaint</button>
+        </form>
+        <button class="btn btn-back w-100" onclick="goToDashboard()">Back to Dashboard</button>
+
+    </section>
+
+    <script>
+        // JavaScript function to handle form submission
+        function submitComplaint() {
+            event.preventDefault();  // Prevent default form submission behavior
+            
+            // Here you can process the complaint data, e.g., validate or store the form data.
+            let complaint = document.getElementById('complaint').value;
+            let employeeId = document.getElementById('employee-id').value;
+
+            // After processing, redirect to another section
+            if (complaint && employeeId) {
+                alert('Complaint Submitted Successfully!');
+                window.location.href = 'view.html';  // Redirect to a 'Thank You' or another section/page
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+        function goToDashboard() {
+            window.location.href = "{% url 'employee-dashboard' %}"; // Adjust this to match your defined route
+        }
+    </script>
+
+</body>
+</html>
