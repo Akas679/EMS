@@ -69,3 +69,5 @@ def apply_for_leave(request):
 @login_required
 def raised_complaint(request):
     return render(request, 'emp/emp_complaint.html')
+
+
